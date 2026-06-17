@@ -1,0 +1,42 @@
+name: CI for flask app
+
+on:
+  pull_request:
+
+  push:
+    branches:
+      - main
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create .env
+        run: |
+          echo "DB_HOST=db" >> .env
+          echo "DB_NAME=appdb" >> .env
+          echo "DB_USER=appuser" >> .env
+          echo "DB_PASSWORD=testpass" >> .env
+          echo "MYSQL_ROOT_PASSWORD=rootpass" >> .env
+
+      - name: Compose build
+        run: docker compose up -d --build
+
+      - name: Wait for startup
+        run: sleep 10
+
+      - name: Health Check
+        run: curl -f http://localhost:8080/health
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose logs
+
+      - name: Cleanup
+        if: always()
+        run: docker compose down
