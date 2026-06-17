@@ -20,22 +20,7 @@ The goal of the project was to practice core DevOps concepts including Docker, c
 ## Architecture
 
 ```text
-User
-  |
-  v
-localhost:8080
-  |
-  v
-Flask Container (web)
-  |
-Docker Network
-  |
-  v
-MySQL Container (db)
-  |
-Docker Volume
-  |
-Persistent Database Storage
+User -> localhost:8080 -> Flask Container (web) - Docker Network -> MySQL Container (db) - Docker Volume - Persistent Database Storage
 ```
 
 ## Features
@@ -147,6 +132,3 @@ During development I gained practical experience with:
 * Debugging containerized applications
 * Working with persistent volumes
 * Connecting applications to databases inside Docker networks
-
-```
-```
